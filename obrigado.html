@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!--
+  PÁGINA DE GRACIAS — a donde Hotmart manda a quien terminó de pagar.
+
+  Configurar en Hotmart: Producto > Configuración > Página de obrigado /
+  pós-compra (compra aprobada) -> https://<dominio-de-la-pagina>/obrigado.html
+
+  El botón abre la aplicación con el código que la página de ventas guardó en
+  este celular. El código NO da acceso por sí solo: el servidor sólo activa
+  el plan cuando Hotmart confirmó la compra con ese mismo código. Si alguien
+  abre esta página en otro celular, entra a la aplicación como visitante.
+-->
+<meta name="robots" content="noindex, nofollow">
+<title>¡Gracias! — La Palabra de Dios</title>
+<link rel="icon" href="imagens/icono-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Cormorant+Garamond:wght@700&display=swap">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 28px 20px;
+    background: radial-gradient(70% 60% at 80% 10%, rgba(232, 211, 171, 0.8), transparent 70%), #efe5d3;
+    color: #3b2e22;
+    font-family: "Atkinson Hyperlegible", Verdana, Tahoma, sans-serif;
+    font-size: 19px; line-height: 1.6; text-align: center;
+  }
+  main { width: 100%; max-width: 460px; }
+  .sello {
+    width: 84px; height: 84px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%; background: #e8d3ab; color: #8a6533;
+  }
+  .sello svg { width: 46px; height: 46px; }
+  h1 {
+    margin: 22px 0 0;
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 2.6rem; line-height: 1.05;
+  }
+  p { margin: 14px 0 0; color: #5c4b3b; }
+  .entrar {
+    display: flex; align-items: center; justify-content: center;
+    width: 100%; min-height: 68px; margin-top: 30px; padding: 16px 24px;
+    border-radius: 18px;
+    background: #9c7438; background-image: linear-gradient(135deg, #b8894a, #8a6533);
+    color: #fdf9f1; font-size: 1.35rem; font-weight: 700; text-decoration: none;
+    box-shadow: 0 10px 30px -14px rgba(90, 62, 28, 0.55);
+  }
+  .entrar:active { transform: scale(0.98); }
+  .entrar:focus-visible { outline: 3px solid #3b2e22; outline-offset: 3px; }
+  .nota { margin-top: 22px; font-size: 1rem; }
+  .guardar {
+    margin-top: 26px; padding: 16px 18px; border-radius: 16px;
+    background: #fbf6ec; border: 1px solid #dccbad; font-size: 1rem; text-align: left;
+  }
+  .guardar strong { color: #3b2e22; }
+</style>
+</head>
+<body>
+<main>
+  <div class="sello" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+  </div>
+
+  <h1>¡Gracias por unirte!</h1>
+  <p>Tu acceso completo a La Palabra de Dios ya está listo. Toca el botón para entrar.</p>
+
+  <a class="entrar" id="entrar" href="https://lapalabradedios.vercel.app/inicio">Entrar a la aplicación</a>
+
+  <p class="nota">Si pagaste en OXXO o en efectivo, tu acceso se activa solo en cuanto el pago se confirme.</p>
+
+  <div class="guardar">
+    <strong>Consejo:</strong> cuando se abra la aplicación, agrégala a la pantalla de inicio de tu celular. Así la encuentras siempre con un solo toque.
+  </div>
+</main>
+
+<script>
+  (function () {
+    // En la computadora de desarrollo, la aplicación corre en el puerto 8137.
+    var local = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+    var APP = local ? "http://localhost:8137" : "https://lapalabradedios.vercel.app";
+
+    var codigo = null;
+    try { codigo = localStorage.getItem("lpd-codigo-compra"); } catch (e) {}
+    // Por si Hotmart devuelve el xcod en la dirección (y para probar a mano).
+    var enUrl = /[?&]xcod=([a-f0-9]{32})/i.exec(location.search);
+    if (!codigo && enUrl) codigo = enUrl[1].toLowerCase();
+
+    var enlace = APP + "/inicio";
+    if (codigo && /^[a-f0-9]{32}$/.test(codigo)) enlace += "?acceso=" + codigo;
+    document.getElementById("entrar").href = enlace;
+  })();
+</script>
+</body>
+</html>
